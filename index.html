@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <style>
+        .select {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="geocode" class="select">
+        <input v-model="current" type="text">
+        {{data}}
+        <select size="6">
+            <option v-for="el in option" v-on:click="current = el">{{el}}</option>
+        </select>
+    </div>
+    <script>
+        new Vue({
+            el: '#geocode',
+            data: {
+                current: "",
+                option: [],
+            },
+            computed: {
+                data() {
+                    const response = async () => {
+                        const response = await fetch(`/index.php?query=${this.current}`, {cache: "no-cache"});
+                        const json = await response.json();
+                        this.option = json;
+                        return json;
+                    };
+
+                    let dat = response();
+                    console.log(dat);
+                    return dat;
+                }
+            },
+        })
+    </script>
+</body>
+</html>
