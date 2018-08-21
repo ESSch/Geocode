@@ -15,35 +15,39 @@
     </style>
 </head>
 <body>
-    <div id="geocode" class="select">
-        <input v-model="current" type="text">
-        {{data}}
-        <select size="6">
-            <option v-for="el in option" v-on:click="current = el">{{el}}</option>
-        </select>
+    <div id="geocode">
+        <geocode-component>1</geocode-component>
     </div>
     <script>
-        new Vue({
-            el: '#geocode',
-            data: {
-                current: "",
-                option: [],
+        Vue.component('geocode-component', {
+            data: function () {
+                return {
+                    current: "",
+                    option: [],
+                };
             },
             computed: {
                 data() {
                     const response = async () => {
                         const response = await fetch(`/index.php?query=${this.current}`, {cache: "no-cache"});
-                        const json = await response.json();
-                        this.option = json;
-                        return json;
+                        this.option = await response.json();
                     };
 
-                    let dat = response();
-                    console.log(dat);
-                    return dat;
+                    response();
                 }
             },
-        })
+            template: `
+            <div class="select">
+                <input v-model="current">
+                <span style="display: none">{{data}}</span>
+                <select size="6">
+                    <option v-for="el in option" v-on:click="current = el">{{el}}</option>
+                </select>
+            </div>
+            `,
+        });
+
+        new Vue({el: '#geocode'});
     </script>
 </body>
 </html>
