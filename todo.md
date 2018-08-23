@@ -26,3 +26,13 @@ Full stack web программист (php, javascript)
 * Yandex Geocode https://tech.yandex.ru/maps/doc/geocoder/desc/concepts/limits-docpage/
 * web view-source:http://geocode.essch.ru/
 * github https://github.com/ESSch/Geocode
+
+### Расширение 
+Для расширения можно использовать скалирование с помощью docker-compose.
+Для примера добавил DockerFile и docker-composer.yml, например
+"docker-compose scale geocode=10"
+Логирование тогда выводим в консоль или отравляем по http
+Если лог будет текстовым, тогда прийдётся испльзовать logstash, что не целесообразно, но 
+позволит использовать разные системы логирования ElasticSearch, Sphinx и другие.
+Поскольку лог узкоспециализированные, то предлагаю испльвать писать напрямую в 
+ElasticSearch, а обычные логи так как у Вас приянто.
