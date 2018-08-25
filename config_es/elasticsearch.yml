@@ -1,0 +1,4 @@
+http.host: 0.0.0.0
+cluster.routing.allocation.disk.threshold_enabled: true
+cluster.routing.allocation.disk.watermark.low: 3gb
+cluster.routing.allocation.disk.watermark.high: 5gb

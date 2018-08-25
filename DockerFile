@@ -1,3 +1,0 @@
-FROM local/c7-systemd
-EXPOSE 80
-CMD ["/usr/sbin/init"]

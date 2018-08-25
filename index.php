@@ -1,4 +1,16 @@
 <?php
+
+    function (string $log) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://geocode1.essch.ru:9200/app/log/1?pretty'); // todo $_SERVER["ES_HOST"]
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($ch);
+        $log = [
+            "query" => $_GET["query"],
+        ];
+        $log = json_encode($log);
+        curl_close($ch);
+    }
     // todo: фильрация частых запросов
     // todo: выбрать наиболее подходящие варианты
     // todo: обработка ошибок

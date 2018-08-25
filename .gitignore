@@ -1,3 +1,5 @@
 .idea
 log.txt
 node_modules
+data_es
+init.sh

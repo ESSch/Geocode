@@ -36,3 +36,11 @@ Full stack web программист (php, javascript)
 позволит использовать разные системы логирования ElasticSearch, Sphinx и другие.
 Поскольку лог узкоспециализированные, то предлагаю испльвать писать напрямую в 
 ElasticSearch, а обычные логи так как у Вас приянто.
+
+### Достпы
+* http://geocode1.essch.ru       app
+* http://geocode1.essch.ru:5601/ kibana
+* http://geocode1.essch.ru:9200/ logsash
+
+### Окружение
+* минимум 2560 МБ оперативной памяти
