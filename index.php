@@ -1,24 +1,33 @@
 <?php
+    include_once __DIR__ . '/lib.php';
 
-    function (string $log) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://geocode1.essch.ru:9200/app/log/1?pretty'); // todo $_SERVER["ES_HOST"]
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_exec($ch);
-        $log = [
-            "query" => $_GET["query"],
-        ];
-        $log = json_encode($log);
-        curl_close($ch);
-    }
+    /**
+     * @expamle curl -XPUT 'http://geocode1.essch.ru:9200/app/log/1?pretty' -d '{"url": "https://habr.com/post/280488/"}'
+                curl -XGET 'http://geocode1.essch.ru:9200/app/log'
+     */
+//     echo post("/app5", [
+//        "mappings" => [
+//            "log" => [
+//                "properties" => [
+//                    "date" => [
+//                        "type" => "date",
+//                    ]
+//                ]
+//            ]
+//        ]
+//     ]);
+
+    // show http://geocode1.essch.ru:9200/app5/log/_search?pretty
+     echo post("/app5/log/" .  mktime(), [
+        "query" => $_GET["query"],
+        "date" => date("Y-m-d"),
+     ]);
+
     // todo: фильрация частых запросов
-    // todo: выбрать наиболее подходящие варианты
     // todo: обработка ошибок
-    // todo: формат запроса
     /**
      * @example http://geocode.essch.ru/?query=Ивановка
      */
-    file_put_contents(__DIR__ . '/log.txt', $_GET["query"] . "\n", FILE_APPEND);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "https://geocode-maps.yandex.ru/1.x/?format=json&results=6&geocode=" . $_GET["query"]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

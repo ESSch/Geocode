@@ -8,19 +8,29 @@ services:
     volumes:
       - "./data_es:/usr/share/elasticsearch/data:rw"
       - "./config_es:/usr/share/elasticsearch/config"
-    environment:
-      - ES_JAVA_OPTS="-Xms512m -Xmx512m"
+  #   environment:
+  #    - ES_JAVA_OPTS="-Xms512m -Xmx512m"
   app:
-    image: fauria/lamp
+    image: mattrayner/lamp:latest-1604-php7
     restart: always
     depends_on:
       - elasticsearch
     volumes:
-      - ".:/var/www/html"
+      - ".:/app"
     ports:
       - "80:80"
-    entrypoint:
-      - ES_HOST="http://geocode1.essch.ru:9200/"
+    environment:
+      - ES_HOST=http://geocode1.essch.ru:9200
+#    healthcheck:
+#      test: ["CMD" "curl" "-f" "http://geocode1.essch.ru:9200"]
+#      interval: 2s
+#      timeout: 5s
+#  web:
+#    image: httpd:2.4
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - .:/usr/local/apache2/htdocs/ #? CMD ["apache2", "-DFOREGROUND"]
   kibana:
     image: kibana
     restart: always
