@@ -1,0 +1,6 @@
+# for buil vuejs, use nodejs
+version: '2'
+services:
+  image: node
+  volumes:
+    - ./.
