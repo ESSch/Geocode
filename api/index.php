@@ -1,4 +1,7 @@
 <?php
+
+ob_start;
+try {
     include_once __DIR__ . '/lib.php';
 
     /**
@@ -18,13 +21,12 @@
 //     ]);
 
     // show http://geocode1.essch.ru:9200/app5/log/_search?pretty
-     echo post("/app5/log/" .  mktime(), [
+    $list = post("/app5/log/" .  mktime(), [
         "query" => $_GET["query"],
         "date" => date("Y-m-d"),
-     ]);
+    ]);
 
     // todo: фильрация частых запросов
-    // todo: обработка ошибок
     /**
      * @example http://geocode.essch.ru/?query=Ивановка
      */
@@ -39,5 +41,13 @@
     $list = array_column($list, "metaDataProperty");
     $list = array_column($list, "GeocoderMetaData");
     $list = array_column($list, "text");
+    $stdout = ob_get_contents();
     header('Content-Type: application/json');
+    if ($stdout) {
+        echo json_encode(["error" => $stdout], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
     echo json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+} catch(\Throwable $e) {
+    echo json_encode(["error" => $e->getMessage()]);
+}

@@ -1,36 +1,35 @@
 version: '2'
 services:
-  elasticsearch:
-    image: elasticsearch
+  static:
+    image: mattrayner/lamp:latest-1604-php7 # todo: enginx
     restart: always
-    ports:
-      - "9200:9200"
+    depends_on: api
     volumes:
-      - "./data_es:/usr/share/elasticsearch/data:rw"
-      - "./config_es:/usr/share/elasticsearch/config"
-  #   environment:
-  #    - ES_JAVA_OPTS="-Xms512m -Xmx512m"
-  app:
-    image: mattrayner/lamp:latest-1604-php7
+      - "./static:/app"
+    ports:
+      - "80:80"
+  api:
+    image: mattrayner/lamp:latest-1604-php7 # todo phpfpm
     restart: always
     depends_on:
       - elasticsearch
     volumes:
-      - ".:/app"
+      - "./api:/app"
     ports:
-      - "80:80"
+      - "9001:80"
     environment:
       - ES_HOST=http://geocode1.essch.ru:9200
 #    healthcheck:
 #      test: ["CMD" "curl" "-f" "http://geocode1.essch.ru:9200"]
 #      interval: 2s
 #      timeout: 5s
-#  web:
-#    image: httpd:2.4
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - .:/usr/local/apache2/htdocs/ #? CMD ["apache2", "-DFOREGROUND"]
+  web:
+    image: httpd:2.4
+    ports:
+      - "9090:80"
+    volumes:
+      - .:/usr/local/apache2/htdocs/ #? CMD ["apache2", "-DFOREGROUND"]
+#      - ./apache2_conf:/usr/local/apache2/conf/httpd.conf
   kibana:
     image: kibana
     restart: always
@@ -38,5 +37,3 @@ services:
       - elasticsearch
     ports:
       - "5601:5601"
-    # environment:
-    # ELASTICSEARCH_URL=http://some-elasticsearch:9200

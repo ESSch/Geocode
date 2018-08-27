@@ -1,0 +1,12 @@
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch
+    restart: always
+    ports:
+      - "9200:9200"
+    volumes:
+      - "./data_es:/usr/share/elasticsearch/data:rw"
+      - "./config_es:/usr/share/elasticsearch/config"
+  #   environment:
+  #    - ES_JAVA_OPTS="-Xms512m -Xmx512m"
